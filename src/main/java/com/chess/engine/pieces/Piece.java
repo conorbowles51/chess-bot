@@ -17,6 +17,14 @@ public abstract class Piece {
         this.hasMoved = false;
     }
 
+    public boolean isKing(){
+        return false;
+    }
+
+    public int getTileIndex(){
+        return  this.tileIndex;
+    }
+
     public PieceColor getColor(){
         return this.color;
     }

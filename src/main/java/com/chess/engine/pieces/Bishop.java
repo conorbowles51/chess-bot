@@ -62,4 +62,9 @@ public class Bishop extends Piece {
         return BoardUtils.EIGHTH_COLUMN[currentIdx] &&
                 (direction == 9 || direction == -7);
     }
+
+    @Override
+    public String toString() {
+        return "B";
+    }
 }

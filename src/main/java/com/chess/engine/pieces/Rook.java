@@ -60,4 +60,9 @@ public class Rook extends Piece {
     private static boolean isEighthColumnExclusion(final int currentIdx, final int direction){
         return BoardUtils.EIGHTH_COLUMN[currentIdx] && direction == 1;
     }
+
+    @Override
+    public String toString() {
+        return "R";
+    }
 }

@@ -27,7 +27,7 @@ public class Knight extends Piece {
         for(final int offset : CANDIDATE_MOVE_OFFSETS){
             final int candidateDestinationIdx = this.tileIndex + offset;
 
-            if(BoardUtils.isValidIndex(candidateDestinationIdx)){
+            if(!BoardUtils.isValidIndex(candidateDestinationIdx)){
                 continue;
             }
 
@@ -70,5 +70,10 @@ public class Knight extends Piece {
     private static boolean isEighthColumnExclusion(final int currentIdx, final int candidateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentIdx] &&
                 (candidateOffset == 17 || candidateOffset == 10 || candidateOffset == -6 || candidateOffset == -15);
+    }
+
+    @Override
+    public String toString() {
+        return "N";
     }
 }

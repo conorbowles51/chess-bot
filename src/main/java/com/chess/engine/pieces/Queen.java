@@ -62,4 +62,9 @@ public class Queen extends Piece{
         return BoardUtils.EIGHTH_COLUMN[currentIdx] &&
                 (direction == 9 || direction == -7 || direction == 1);
     }
+
+    @Override
+    public String toString() {
+        return "Q";
+    }
 }
