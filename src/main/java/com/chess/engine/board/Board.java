@@ -14,18 +14,21 @@ public class Board {
 
     private final Player whitePlayer;
     private final Player blackPlayer;
+    private final PieceColor nextToMove;
 
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
-        this.whitePieces = getActivePieces(this.gameBoard, PieceColor.WHITE);
-        this.blackPieces = getActivePieces(this.gameBoard, PieceColor.BLACK);
+        this.whitePieces = getActivePieces(PieceColor.WHITE);
+        this.blackPieces = getActivePieces(PieceColor.BLACK);
 
         final Collection<Move> whiteLegalMoves = calculateLegalMoves(this.whitePieces);
         final Collection<Move> blackLegalMoves = calculateLegalMoves(this.blackPieces);
 
-        this.whitePlayer = new Player(this, whiteLegalMoves, blackLegalMoves, true);
-        this.blackPlayer = new Player(this, whiteLegalMoves, blackLegalMoves, false);
+        this.whitePlayer = new Player(this, whiteLegalMoves, blackLegalMoves, PieceColor.WHITE);
+        this.blackPlayer = new Player(this, whiteLegalMoves, blackLegalMoves, PieceColor.BLACK);
+        this.nextToMove = builder.nextToMove;
     }
+
 
     private Collection<Move> calculateLegalMoves(Collection<Piece> pieces) {
         final List<Move> legalMoves = new ArrayList<>();
@@ -37,10 +40,22 @@ public class Board {
         return ImmutableList.copyOf(legalMoves);
     }
 
-    private static Collection<Piece> getActivePieces(List<Tile> gameBoard, PieceColor pieceColor) {
+    public Player getWhitePlayer() {
+        return this.whitePlayer;
+    }
+
+    public Player getBlackPlayer() {
+        return this.blackPlayer;
+    }
+
+    public Player getCurrentPlayer() {
+        return this.nextToMove == PieceColor.WHITE ? this.whitePlayer : this.blackPlayer;
+    }
+
+    public Collection<Piece> getActivePieces(PieceColor pieceColor) {
         final List<Piece> pieces = new ArrayList<>();
 
-        for(final Tile tile : gameBoard){
+        for(final Tile tile : this.gameBoard){
             final Piece piece = tile.getPiece();
 
             if(piece != null && piece.getColor() == pieceColor){
@@ -110,6 +125,18 @@ public class Board {
         builder.setNextToMove(PieceColor.WHITE);
 
         return builder.build();
+    }
+
+    public Collection<Move> calculateAttacksOnTile(int tileIndex, Collection<Move> opponentLegalMoves) {
+        final List<Move> attacks = new ArrayList<>();
+
+        for(Move move : opponentLegalMoves){
+            if(tileIndex == move.getDestinationIndex()){
+                attacks.add(move);
+            }
+        }
+
+        return ImmutableList.copyOf(attacks);
     }
 
     public static class Builder {
